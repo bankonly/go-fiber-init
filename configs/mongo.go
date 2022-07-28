@@ -19,16 +19,12 @@ var (
 
 func ConnectDB() (*mongo.Client, context.Context) {
 	var (
-		mongoURI       = os.Getenv("MONGO_URI")
-		replicaSetName = "rs"
-		database       = os.Getenv("DATABASE_NAME")
+		mongoURI = os.Getenv("MONGO_URI")
+		database = os.Getenv("DATABASE_NAME")
 	)
 
 	DBContext = context.Background()
-	client, err := mongo.Connect(DBContext,
-		options.Client().ApplyURI(mongoURI),
-		options.Client().SetReplicaSet(replicaSetName),
-	)
+	client, err := mongo.Connect(DBContext, options.Client().ApplyURI(mongoURI))
 	if err != nil {
 		log.Fatal(err)
 	}
