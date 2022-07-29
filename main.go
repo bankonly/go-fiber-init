@@ -24,7 +24,9 @@ func main() {
 	app := fiber.New(configs.FiberConfig())
 	app.Use(logger.New(logger.ConfigDefault)) // Logging Request
 
-	var _ = services.InitServiceInstances()
+	var serviceInstances = services.InitServiceInstances()
+
+	app.Route("/go-fiber-init", services.RegisterUserService(serviceInstances))
 
 	app.Use(recover.New()) // Enable error handler inside fiber config
 
