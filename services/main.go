@@ -1,18 +1,25 @@
 package services
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"context"
+	"gofiber/configs"
 
-type Services interface {
-	greeting(*fiber.Ctx) error
+	"github.com/go-redis/redis/v9"
+	"go.mongodb.org/mongo-driver/mongo"
+)
+
+type ServiceInstances struct {
+	DBClient  *mongo.Client
+	DBContext context.Context
+	DB        *mongo.Database
+	Redis     *redis.Client
 }
 
-type services struct{}
-
-func (s services) greeting(c *fiber.Ctx) error {
-	return c.JSON("Hello Fiber")
-}
-
-func RegisterMainService(router fiber.Router) {
-	var s Services = services{}
-	router.Get("/", s.greeting)
+func InitServiceInstances() ServiceInstances {
+	return ServiceInstances{
+		DBClient:  configs.DBClient,
+		DBContext: configs.DBContext,
+		DB:        configs.DB,
+		Redis:     configs.RedisCli,
+	}
 }

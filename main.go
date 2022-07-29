@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 
-	"tradexcore/configs"
-	"tradexcore/services"
+	"gofiber/configs"
+	"gofiber/services"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -24,8 +24,13 @@ func main() {
 	app := fiber.New(configs.FiberConfig())
 	app.Use(logger.New(logger.ConfigDefault)) // Logging Request
 
-	app.Route("/", services.RegisterMainService) // Initial Router
-	app.Use(recover.New())                       // Enable error handler inside fiber config
+	var _ = services.InitServiceInstances()
+
+	app.Use(recover.New()) // Enable error handler inside fiber config
+
+	app.Get("/", func(c *fiber.Ctx) error { // Default routing
+		return c.JSON("Server is running")
+	})
 
 	app.Listen(":20220")                // Start web server
 	log.Fatal("TradeX Core is serving") // Logging message
