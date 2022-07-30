@@ -1,7 +1,7 @@
 package configs
 
 import (
-	"tradexcore/middlewares"
+	"gofiber/middlewares"
 
 	"github.com/gofiber/fiber/v2"
 )
